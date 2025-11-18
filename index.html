@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayam Goreng GEGERAN - Bumbu Kuning Khas Nusantara</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* Import Font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+        
+        /* Base Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F7F7F7;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        
+        /* Custom Colors */
+        .bg-gegeran-yellow { background-color: #FFC000; }
+        .text-gegeran-yellow { color: #FFC000; }
+        .text-gegeran-black { color: #1A1A1A; }
+        
+        /* Utilities */
+        .transition-all { transition: all 0.3s ease-in-out; }
+
+        /* Tombol Bulat Besar */
+        .circle-button {
+            width: 150px;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            line-height: 1.2;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+            cursor: pointer;
+        }
+
+        /* Tombol Navigasi */
+        .nav-button {
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .nav-button:hover {
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* --- ANIMASI AYAM (Chicken Follower) --- */
+        #chicken-wrapper {
+            position: relative;
+            width: 200px; 
+            height: 250px;
+        }
+        #body {
+            width: 100%;
+            height: 100%;
+            border-radius: 60px / 75px; 
+            background: linear-gradient(180deg, #ffc000 0%, #ff8c00 100%);
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.3), 
+                inset 0 10px 10px rgba(255, 255, 255, 0.4); 
+            position: absolute;
+            top: 0;
+        }
+        #comb {
+            width: 30px;
+            height: 60px;
+            background: linear-gradient(0deg, #ff6347 0%, #ff0000 100%); 
+            border-radius: 50%;
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: inset 0 -5px 5px rgba(0, 0, 0, 0.2);
+        }
+        #eyes-container {
+            position: absolute;
+            width: 120px;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10; 
+            display: flex;
+            justify-content: space-between;
+        }
+        .eye {
+            width: 25px;
+            height: 25px;
+            background-color: white;
+            border-radius: 50%;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .pupil {
+            width: 12px;
+            height: 12px;
+            background-color: black;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transform-origin: 50% 50%;
+        }
+        #beak {
+            width: 30px;
+            height: 15px;
+            background-color: #ff6a00; 
+            border-radius: 50%;
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: inset 0 -2px 2px rgba(0, 0, 0, 0.2);
+        }
+        .wing {
+            width: 15px;
+            height: 40px;
+            background-color: #ffd700;
+            border-radius: 50%;
+            position: absolute;
+            top: 150px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+        }
+        #wing-left { left: -10px; transform: rotate(-30deg); }
+        #wing-right { right: -10px; transform: rotate(30deg); }
+        .foot {
+            width: 25px;
+            height: 10px;
+            background-color: #ff6a00;
+            border-radius: 50%;
+            position: absolute;
+            bottom: -5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        #foot-left { left: 30px; }
+        #foot-right { right: 30px; }
+    </style>
+</head>
+<body class="text-gegeran-black">
+
+    <nav class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0">
+                    <span class="text-2xl font-black text-gegeran-black uppercase cursor-pointer" onclick="showPage('home-page')">GEGERAN</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#about" class="text-gray-600 hover:text-gegeran-yellow transition-all">Tentang Kami</a>
+                    <a href="#menu" class="text-gray-600 hover:text-gegeran-yellow transition-all">Menu</a>
+                    <a href="#testimony" class="text-gray-600 hover:text-gegeran-yellow transition-all">Testimoni</a>
+                    <a href="#location" class="text-gray-600 hover:text-gegeran-yellow transition-all">Lokasi</a>
+                </div>
+                <div class="hidden md:block">
+                  <button 
+                    onclick="document.getElementById('location').scrollIntoView({ behavior: 'smooth' })" 
+                    class="bg-gegeran-yellow text-gegeran-black font-semibold py-2 px-6 rounded-full hover:shadow-lg transition-all shadow-md">
+                    Order Sekarang
+                  </button>
+                </div>
+                <button class="md:hidden p-2 text-gegeran-black hover:text-gegeran-yellow" onclick="document.getElementById('mobile-menu').classList.toggle('hidden');">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200">
+            <a href="#about" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Tentang Kami</a>
+            <a href="#menu" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Menu</a>
+            <a href="#testimony" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Testimoni</a>
+            <a href="#location" class="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100">Lokasi</a>
+            <div class="p-4">
+                <button onclick="document.getElementById('location').scrollIntoView({ behavior: 'smooth' })" class="w-full bg-gegeran-yellow text-gegeran-black font-semibold py-2 rounded-full shadow-md">
+                    Order Sekarang
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <div id="home-page">
+
+        <section id="hero-section" class="py-24 md:py-36 text-gegeran-black mb-16 shadow-xl bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    
+                    <div class="text-left">
+                        <h1 class="text-5xl md:text-7xl font-extrabold mb-4 leading-tight">
+                            GURIH, RENYAH, MERESAP.
+                        </h1>
+                        <p class="text-xl md:text-2xl font-light mb-8 max-w-2xl">
+                            Ayam Goreng Bumbu Kuning Khas Nusantara. Kelezatan rumahan dengan Sambal Pedas Nagih!
+                        </p>
+                        <div class="flex space-x-4">
+                            <button onclick="showPage('menu-page')" class="bg-gegeran-yellow text-gegeran-black font-bold py-3 px-8 rounded-full text-lg hover:shadow-2xl transition-all shadow-lg nav-button">
+                                CEK MENU LENGKAP
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center lg:justify-start mt-12 lg:mt-0 lg:ml-20"> 
+                        <div id="chicken-wrapper" class="scale-90 lg:scale-100">
+                            <div id="body"></div>
+                            <div id="comb"></div>
+                            <div class="wing" id="wing-left"></div>
+                            <div class="wing" id="wing-right"></div>
+                            <div class="foot" id="foot-left"></div>
+                            <div class="foot" id="foot-right"></div>
+                            <div id="beak"></div>
+                            
+                            <div id="eyes-container">
+                                <div class="eye" id="eye-left">
+                                    <div class="pupil" id="pupil-left"></div>
+                                </div>
+                                <div class="eye" id="eye-right">
+                                    <div class="pupil" id="pupil-right"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-12">
+                Kenapa GEGERAN? <span class="text-gegeran-yellow">Bikin Nagih!</span>
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-gegeran-yellow hover:shadow-xl transition-all">
+                    <div class="text-4xl mb-4 text-gegeran-yellow">🌶️</div>
+                    <h3 class="text-xl font-bold mb-3">Sambal Khas Pedas Nagih</h3>
+                    <p class="text-gray-600">Disajikan dengan sambal terasi dan sambal matah spesial yang diracik fresh setiap hari.</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-gegeran-yellow hover:shadow-xl transition-all">
+                    <div class="text-4xl mb-4 text-gegeran-yellow">🍗</div>
+                    <h3 class="text-xl font-bold mb-3">Bumbu Kuning Meresap</h3>
+                    <p class="text-gray-600">Ayam diungkep dengan bumbu kuning kaya rempah, lalu digoreng hingga renyah.</p>
+                </div>
+                <div class="bg-white p-8 rounded-2xl shadow-lg border-t-4 border-gegeran-yellow hover:shadow-xl transition-all">
+                    <div class="text-4xl mb-4 text-gegeran-yellow">🏡</div>
+                    <h3 class="text-xl font-bold mb-3">Konsep Rumahan Modern</h3>
+                    <p class="text-gray-600">Cita rasa tradisional diolah dengan standar kebersihan tinggi dan pelayanan cepat.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="menu" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 bg-white rounded-3xl shadow-2xl my-16">
+            <div class="text-center mb-12">
+                <span class="text-gegeran-yellow font-bold uppercase tracking-widest">Favorit Kami</span>
+                <h2 class="text-4xl md:text-5xl font-extrabold mt-2">Menu Utama GEGERAN</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <div class="p-6 rounded-2xl bg-gegeran-yellow shadow-xl">
+                        <h3 class="text-3xl font-black mb-2 text-gegeran-black">Ayam Goreng Bumbu Kuning</h3>
+                        <p class="text-lg text-gegeran-black">Ayam pejantan pilihan, diungkep dalam bumbu kuning rempah kaya rasa, lalu digoreng *crispy*.</p>
+                        <ul class="mt-4 space-y-2 text-gegeran-black font-semibold">
+                            <li>✅ Paha / Dada (25k)</li>
+                            <li>✅ Ayam Geprek (Level 1-5)</li>
+                        </ul>
+                        
+                        <div class="inline-block mt-8">
+                            <button onclick="showPage('menu-page')" class="bg-gegeran-yellow text-gegeran-black font-bold py-3 px-8 rounded-full text-lg hover:shadow-2xl transition-all shadow-lg nav-button">
+                                LIHAT SEMUA PILIHAN
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="p-6 rounded-2xl bg-gray-100 shadow-lg">
+                        <h3 class="text-2xl font-bold mb-2">Pelengkap & Nasi Uduk</h3>
+                        <p class="text-gray-600">Tambahkan Tahu, Tempe, Ati Ampela, Sayur Asem, atau Nasi Uduk khas Gegeran.</p>
+                    </div>
+                </div>
+
+                <div class="rounded-3xl shadow-2xl overflow-hidden bg-white">
+                    <div class="p-8">
+                        <h3 class="text-3xl font-extrabold mb-6 border-b pb-3 border-gegeran-yellow">DAFTAR MENU RINGKAS</h3>
+                        <div class="grid grid-cols-2 gap-y-4">
+                            <div class="col-span-2 flex items-start space-x-4 mb-4">
+                                <div class="w-1/3 flex-shrink-0">
+                                    <img src="gegeran1.png" onerror="this.src='https://placehold.co/150x150/FFC000/1A1A1A?text=Menu+Ayam'" alt="Ayam Goreng" class="rounded-lg shadow-md w-full">
+                                </div>
+                                <div class="w-2/3">
+                                    <p class="text-xl font-bold">AYAM GORENG</p>
+                                    <p class="text-gray-600">Paha / Dada</p>
+                                </div>
+                            </div>
+                            <div class="col-span-1">
+                                <p class="font-bold">Sambal & Pelengkap</p>
+                                <ul class="list-disc list-inside text-gray-700 ml-2">
+                                    <li>Sambal Terasi</li>
+                                    <li>Sambal Matah</li>
+                                </ul>
+                            </div>
+                            <div class="col-span-1">
+                                <p class="font-bold">Nasi & Sayuran</p>
+                                <ul class="list-disc list-inside text-gray-700 ml-2">
+                                    <li>Nasi Uduk</li>
+                                    <li>Sayur Asem</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimony" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <h2 class="text-3xl md:text-4xl font-extrabold text-center mb-12">Apa Kata Mereka?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all">
+                    <p class="text-2xl mb-4 text-gegeran-yellow">★★★★★</p>
+                    <p class="text-gray-700 italic mb-4">"Ayamnya empuk banget, bumbunya meresap sampai ke dalam. Sambal matahnya juara!"</p>
+                    <p class="font-bold text-gegeran-black">- Sarah P.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all">
+                    <p class="text-2xl mb-4 text-gegeran-yellow">★★★★★</p>
+                    <p class="text-gray-700 italic mb-4">"Nasi uduknya wangi, ayam gepreknya pedas mantap. Pelayanan cepat!"</p>
+                    <p class="font-bold text-gegeran-black">- Bima R.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-2xl transition-all">
+                    <p class="text-2xl mb-4 text-gegeran-yellow">★★★★★</p>
+                    <p class="text-gray-700 italic mb-4">"Selalu pesan antar saat lembur. Crispy-nya tahan lama."</p>
+                    <p class="font-bold text-gegeran-black">- Jessica T.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="location" class="bg-gegeran-black text-black py-20 mt-16 rounded-t-3xl shadow-inner">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h2 class="text-4xl font-extrabold mb-4">Kunjungi Kami di Gading Serpong!</h2>
+                <p class="text-xl mb-8 font-light text-gray-300">Suasana hangat, kasual, dan ramah keluarga.</p>
+                
+                <div class="max-w-xl mx-auto bg-white text-gegeran-black p-6 rounded-xl shadow-2xl">
+                    <p class="font-semibold text-lg mb-2">📍 Ayam Goreng GEGERAN</p>
+                    <p class="text-gray-700 mb-4">Ruko Paramount Center Blok A No. 10, Gading Serpong, Tangerang</p>
+                    
+                    <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4">
+                        <a href="https://maps.google.com" target="_blank" class="bg-gegeran-yellow text-gegeran-black font-bold py-3 px-6 rounded-full hover:shadow-xl transition-all shadow-md w-full md:w-auto inline-block">
+                            Lihat di Google Maps
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="bg-gegeran-black py-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-400 text-sm">
+                <p>© 2024 Ayam Goreng GEGERAN. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+    
+    <div id="menu-page" class="hidden min-h-screen pt-16">
+        <main class="w-full max-w-4xl mx-auto px-4">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-extrabold text-gegeran-black">MENU LENGKAP</h1>
+                <button onclick="showPage('home-page')" class="nav-button bg-gegeran-yellow text-gegeran-black font-semibold py-2 px-6 rounded-full text-sm hover:bg-gegeran-yellow/80">
+                    ← KEMBALI KE BERANDA
+                </button>
+            </div>
+
+            <div class="bg-white p-4 sm:p-8 rounded-xl shadow-2xl">
+                <h2 class="text-2xl font-bold mb-4 text-center text-gegeran-yellow">Daftar Harga & Pilihan</h2>
+                
+                <div class="flex justify-center">
+                    <img src="gegeran1.png" width="300" height="200"
+                        class="w-full max-w-3xl h-auto rounded-lg shadow-xl border-4 border-gegeran-yellow"
+                        alt="Menu Gegeran"
+                        onerror="this.style.display='none'; alert('Gambar menu tidak ditemukan, tapi website tetap jalan kok!');"
+                    >
+                </div>
+
+                <p class="text-center text-gray-500 mt-6 text-sm">
+                    *Menu ini mencakup Ayam Goreng, Pelengkap, Nasi, dan Sayuran.
+                </p>
+            </div>
+
+            <div class="mt-8 text-center">
+                <button onclick="showPage('home-page')" class="nav-button bg-gegeran-yellow text-gegeran-black font-bold py-3 px-8 rounded-full text-lg shadow-xl">
+                    <span class="mr-2">🏠</span> KEMBALI
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Navigasi Halaman
+        function showPage(pageId) {
+            const homePage = document.getElementById('home-page');
+            const menuPage = document.getElementById('menu-page');
+
+            if (pageId === 'home-page') {
+                homePage.classList.remove('hidden');
+                menuPage.classList.add('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else if (pageId === 'menu-page') {
+                homePage.classList.add('hidden');
+                menuPage.classList.remove('hidden');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Animasi Mata Ayam
+        const leftPupil = document.getElementById('pupil-left');
+        const rightPupil = document.getElementById('pupil-right');
+        const leftEye = document.getElementById('eye-left');
+        const rightEye = document.getElementById('eye-right');
+
+        function getEyeCenter(eyeElement) {
+            const rect = eyeElement.getBoundingClientRect();
+            return {
+                x: rect.left + rect.width / 2,
+                y: rect.top + rect.height / 2
+            };
+        }
+
+        document.addEventListener('mousemove', (event) => {
+            if (document.getElementById('menu-page').classList.contains('hidden')) {
+                if (!leftPupil || !rightPupil || !leftEye || !rightEye) return;
+                const mouseX = event.clientX;
+                const mouseY = event.clientY;
+                const moveRadius = 4;
+
+                const leftCenter = getEyeCenter(leftEye);
+                const angleLeft = Math.atan2(mouseY - leftCenter.y, mouseX - leftCenter.x);
+                leftPupil.style.transform = `translate(-50%, -50%) translate(${Math.cos(angleLeft) * moveRadius}px, ${Math.sin(angleLeft) * moveRadius}px)`;
+
+                const rightCenter = getEyeCenter(rightEye);
+                const angleRight = Math.atan2(mouseY - rightCenter.y, mouseX - rightCenter.x);
+                rightPupil.style.transform = `translate(-50%, -50%) translate(${Math.cos(angleRight) * moveRadius}px, ${Math.sin(angleRight) * moveRadius}px)`;
+            }
+        });
+    </script>
+
+</body>
+</html>
